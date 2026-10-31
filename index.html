@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#1e1b52">
+    <meta name="description" content="JJ Games is a small arcade of original games made by JJ.">
+    <title>JJ Games — made to be played</title>
+    <link rel="icon" href="assets/arcade-mark.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="styles.css">
+    <script src="games.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to games</a>
+
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="JJ Games home">
+        <span class="brand-mark" aria-hidden="true">JJ</span>
+        <span class="brand-name">Games</span>
+      </a>
+      <nav aria-label="Main navigation">
+        <a href="#game-shelf">The games</a>
+        <a class="nav-pill" href="#about">About</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="welcome" aria-labelledby="welcome-title">
+        <div class="welcome-copy">
+          <p class="welcome-note"><span class="note-dot" aria-hidden="true"></span> A little arcade by JJ</p>
+          <h1 id="welcome-title">Made by me.<br><span>Ready for you.</span></h1>
+          <p class="welcome-description">A growing shelf of small worlds, strange ideas, and games worth another go.</p>
+          <a class="play-link" href="#game-shelf"><span class="play-icon" aria-hidden="true">▶</span> Find a game</a>
+        </div>
+        <figure class="cabinet-wrap">
+          <img src="assets/arcade-monitor.svg" width="520" height="390" alt="A bright turquoise arcade monitor with a yellow screen and pixel stars">
+          <figcaption class="cabinet-caption"><span class="caption-spark" aria-hidden="true">✳</span> Player one, you’re up</figcaption>
+        </figure>
+        <span class="pixel-spark spark-one" aria-hidden="true">✦</span>
+        <span class="pixel-spark spark-two" aria-hidden="true">✳</span>
+      </section>
+
+      <section class="shelf-section" id="game-shelf" aria-labelledby="shelf-title">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Pick your next adventure</p>
+            <h2 id="shelf-title">The game shelf<span class="heading-period">.</span></h2>
+          </div>
+          <p class="shelf-count" id="shelf-count" aria-live="polite">Loading games…</p>
+        </div>
+        <div class="game-list" id="game-list" aria-live="polite" aria-busy="true"></div>
+        <div class="empty-state" id="empty-state" hidden>
+          <span class="empty-coin" aria-hidden="true">✦</span>
+          <div>
+            <h3>No games on the shelf yet.</h3>
+            <p>Check back soon. Something fun is on its way.</p>
+          </div>
+          <span class="empty-pixel" aria-hidden="true">START</span>
+        </div>
+        <p class="load-error" id="load-error" role="alert" hidden>Couldn’t load the game shelf. Try refreshing the page.</p>
+      </section>
+    </main>
+
+    <footer class="site-footer" id="about">
+      <a class="footer-brand" href="./">JJ Games</a>
+      <p>A personal shelf of original games, made to be played.</p>
+      <a href="#main" class="back-top">Back to top ↑</a>
+    </footer>
+  </body>
+</html>
