@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#1e1b52">
+<meta name="description" content="Play solo Tetris at JJ Games. Stack falling blocks, clear lines, and beat your high score.">
+<title>Tetris — JJ Games</title>
+<style>
+:root{color-scheme:light;--ink:#1e1b52;--blue:#5357d8;--pool:#47d6c8;--orange:#f47545;--yellow:#f4d35e;--screen:#fff7d6;--paper:#fffdf3;--muted:#615e86;--line:#d8d5bd;--display:"Press Start 2P","Courier New",monospace;--body:"Trebuchet MS","Segoe UI",sans-serif}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:var(--screen);color:var(--ink);font:16px/1.5 var(--body)}
+a{color:inherit}button{font:inherit;cursor:pointer}button:focus-visible,a:focus-visible{outline:4px solid var(--orange);outline-offset:3px}
+.wrap{width:min(1000px,calc(100% - 2rem));margin:auto}.topbar{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1.15rem 0}
+.brand{display:flex;align-items:center;gap:.7rem;font:.7rem var(--display);text-decoration:none;letter-spacing:-.08em}.mark{display:grid;place-items:center;width:40px;height:40px;border:3px solid var(--ink);background:var(--yellow);box-shadow:4px 4px 0 var(--ink)}.back{font-weight:800;text-decoration:none}.back:hover{text-decoration:underline}
+main{margin:1.25rem auto 2.5rem;padding:clamp(1.1rem,3vw,2rem);border:3px solid var(--ink);background:var(--pool);box-shadow:8px 8px 0 var(--ink)}
+.heading{display:flex;justify-content:space-between;align-items:end;gap:1rem;flex-wrap:wrap;margin-bottom:1.2rem}.eyebrow{margin:0 0 .4rem;font-size:.76rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+h1{margin:0;font:clamp(1.4rem,4vw,2.1rem)/1.5 var(--display);letter-spacing:-.08em}h1 span{color:var(--blue)}.intro{max-width:55ch;margin:.55rem 0 0}
+.difficulty{display:flex;gap:.4rem;flex-wrap:wrap}.difficulty button,.action,.touch button{border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);background:var(--paper);padding:.5rem .7rem;font-size:.85rem;font-weight:900}.difficulty button[aria-pressed=true]{background:var(--yellow)}
+.game{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:1.2rem;align-items:start}.play-area{min-width:0}
+.status{display:flex;align-items:center;gap:.65rem;min-height:48px;padding:.65rem .85rem;margin:0 0 .8rem;border:2px solid var(--ink);background:var(--paper);font-weight:900}.dot{width:12px;height:12px;flex:0 0 auto;border:2px solid var(--ink);background:var(--orange)}.status[data-mode=paused] .dot{background:var(--yellow)}.status[data-mode=over] .dot{background:var(--blue)}
+.stage{display:flex;justify-content:center;align-items:flex-start;gap:1rem;padding:.85rem;border:2px solid var(--ink);background:#24204f}
+#board{display:block;width:min(100%,300px);height:auto;aspect-ratio:1/2;image-rendering:pixelated;background:#141333;border:2px solid #7772b2}
+.side{display:grid;gap:.8rem}.panel{padding:.9rem;border:2px solid var(--ink);background:var(--paper)}.panel h2{margin:0 0 .65rem;font:.62rem/1.8 var(--display)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}.stat{padding:.55rem .4rem;border:1.5px solid var(--line);text-align:center}.stat strong{display:block;font:1rem var(--display)}.stat span{font-size:.75rem;font-weight:800}
+.preview{display:block;width:100%;max-width:130px;height:90px;margin:auto;background:#f2efdb;border:1px solid var(--line)}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:.55rem}.action{padding:.65rem .45rem}.action.primary{grid-column:1/-1;background:var(--yellow)}.action:hover,.touch button:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.hint{margin:.65rem 0 0;color:var(--muted);font-size:.78rem}
+.touch{display:none;grid-template-columns:repeat(4,1fr);gap:.5rem;margin-top:.75rem}.touch button{padding:.7rem .2rem;font-size:1rem;background:var(--yellow);touch-action:manipulation}
+footer{padding:0 0 2rem;text-align:center;color:var(--muted);font-size:.82rem}
+@media(max-width:700px){.wrap{width:min(100% - 1rem,500px)}main{margin:.75rem auto 2rem;padding:1rem}.game{grid-template-columns:1fr}.stage{gap:.7rem}#board{width:min(66vw,300px)}.side{grid-template-columns:1fr 1fr;align-items:start}.panel:first-child{grid-column:1}.panel:nth-child(2){grid-column:2;grid-row:1}.actions{grid-column:1/-1;grid-row:2}.hint{grid-column:1/-1}.touch{display:grid}}
+@media(max-width:390px){.stage{padding:.5rem;gap:.45rem}#board{width:min(66vw,260px)}.panel{padding:.65rem}.stats{gap:.35rem}.stat{padding:.45rem .2rem}.stat strong{font-size:.85rem}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body><div class="wrap">
+<header class="topbar"><a class="brand" href="../../" aria-label="JJ Games home"><span class="mark" aria-hidden="true">JJ</span><span>GAMES</span></a><a class="back" href="../../">← Back to arcade</a></header>
+<main>
+<div class="heading"><div><p class="eyebrow">Solo arcade classic · Stack &amp; clear</p><h1>TET<span>RIS</span></h1><p class="intro">Fit the falling blocks together, clear complete lines, and chase a new high score.</p></div>
+<div><p class="eyebrow">Game speed</p><div class="difficulty" role="group" aria-label="Difficulty"><button type="button" data-level="easy" aria-pressed="false">Easy</button><button type="button" data-level="medium" aria-pressed="true">Medium</button><button type="button" data-level="hard" aria-pressed="false">Hard</button></div></div></div>
+<div class="game">
+<section class="play-area" aria-label="Tetris game">
+<p class="status" id="status" data-mode="ready" role="status" aria-live="polite"><span class="dot" aria-hidden="true"></span><span id="status-text">Ready — press Start game to play.</span></p>
+<div class="stage"><canvas id="board" width="300" height="600" role="img" aria-label="Tetris playfield, ten columns by twenty rows"></canvas></div>
+<div class="touch" aria-label="Touch controls"><button type="button" data-key="left" aria-label="Move left">◀</button><button type="button" data-key="rotate" aria-label="Rotate">↻</button><button type="button" data-key="right" aria-label="Move right">▶</button><button type="button" data-key="down" aria-label="Soft drop">▼</button><button type="button" data-key="drop" style="grid-column:1/-1">Drop</button></div>
+</section>
+<aside class="side" aria-label="Score and game controls">
+<section class="panel"><h2>GAME STATS</h2><div class="stats"><div class="stat"><strong id="score">0</strong><span>Score</span></div><div class="stat"><strong id="lines">0</strong><span>Lines</span></div><div class="stat"><strong id="level">1</strong><span>Level</span></div><div class="stat"><strong id="best">0</strong><span>Best</span></div></div></section>
+<section class="panel"><h2>NEXT BLOCK</h2><canvas id="next" class="preview" width="130" height="90" role="img" aria-label="Next falling block preview"></canvas></section>
+<section class="panel"><div class="actions"><button class="action primary" id="start" type="button">▶ Start game</button><button class="action" id="pause" type="button" disabled>Ⅱ Pause</button><button class="action" id="restart" type="button">↻ New game</button></div><p class="hint">Keyboard: ← → move · ↑ rotate · ↓ soft drop · Space hard drop · P pause</p></section>
+</aside></div>
+</main><footer>One player. One more round. · JJ Games</footer></div>
+<script>
+(()=> {
+const COLS=10,ROWS=20,SHAPES=[
+{shape:[[1,1,1,1]],color:"#47d6c8"},
+{shape:[[1,0,0],[1,1,1]],color:"#5357d8"},
+{shape:[[0,0,1],[1,1,1]],color:"#f47545"},
+{shape:[[1,1],[1,1]],color:"#f4d35e"},
+{shape:[[0,1,1],[1,1,0]],color:"#67a8f5"},
+{shape:[[0,1,0],[1,1,1]],color:"#d98adf"},
+{shape:[[1,1,0],[0,1,1]],color:"#83c96a"}];
+const canvas=document.querySelector("#board"),ctx=canvas.getContext("2d"),nextCanvas=document.querySelector("#next"),nctx=nextCanvas.getContext("2d");
+const status=document.querySelector("#status"),statusText=document.querySelector("#status-text");
+const levels={easy:850,medium:570,hard:330};let difficulty="medium",grid,piece,next,score=0,lines=0,level=1,best=0,running=false,paused=false,over=false,last=0,dropClock=0,raf=0;
+try{best=Number(localStorage.getItem("jj-tetris-best"))||0}catch{}document.querySelector("#best").textContent=best;
+const clone=m=>m.map(r=>r.slice()),randomPiece=()=>{const p=SHAPES[Math.floor(Math.random()*SHAPES.length)];return {matrix:clone(p.shape),color:p.color,x:0,y:0}};
+function setStatus(msg,mode){statusText.textContent=msg;status.dataset.mode=mode}
+function stats(){document.querySelector("#score").textContent=score;document.querySelector("#lines").textContent=lines;document.querySelector("#level").textContent=level;document.querySelector("#best").textContent=best}
+function drawCell(context,x,y,color,size){context.fillStyle=color;context.fillRect(x*size+1,y*size+1,size-2,size-2);context.fillStyle="rgba(255,255,255,.22)";context.fillRect(x*size+3,y*size+3,size-6,3);context.strokeStyle="rgba(30,27,82,.55)";context.lineWidth=1;context.strokeRect(x*size+1.5,y*size+1.5,size-3,size-3)}
+function draw(){const s=canvas.width/COLS;ctx.fillStyle="#141333";ctx.fillRect(0,0,canvas.width,canvas.height);ctx.strokeStyle="rgba(255,255,255,.07)";ctx.lineWidth=1;for(let x=1;x<COLS;x++){ctx.beginPath();ctx.moveTo(x*s,0);ctx.lineTo(x*s,canvas.height);ctx.stroke()}for(let y=1;y<ROWS;y++){ctx.beginPath();ctx.moveTo(0,y*s);ctx.lineTo(canvas.width,y*s);ctx.stroke()}
+grid.forEach((row,y)=>row.forEach((v,x)=>{if(v)drawCell(ctx,x,y,v,s)}));
+if(piece){const ghost={...piece,y:piece.y};while(valid(ghost,0,1))ghost.y++;piece.matrix.forEach((row,y)=>row.forEach((v,x)=>{if(v){ctx.fillStyle=piece.color+"55";ctx.fillRect((piece.x+x)*s+2,(ghost.y+y)*s+2,s-4,s-4)}}));piece.matrix.forEach((row,y)=>row.forEach((v,x)=>{if(v)drawCell(ctx,piece.x+x,piece.y+y,piece.color,s)}))}
+}
+function drawNext(){nctx.fillStyle="#f2efdb";nctx.fillRect(0,0,nextCanvas.width,nextCanvas.height);const m=next.matrix,s=19,ox=(130-m[0].length*s)/2,oy=(90-m.length*s)/2;m.forEach((r,y)=>r.forEach((v,x)=>{if(v){nctx.fillStyle=next.color;nctx.fillRect(ox+x*s+1,oy+y*s+1,s-2,s-2);nctx.strokeStyle="#1e1b52";nctx.strokeRect(ox+x*s+1.5,oy+y*s+1.5,s-3,s-3)}}))}
+function valid(p,dx=0,dy=0,m=p.matrix){return m.every((r,y)=>r.every((v,x)=>!v||(p.x+x+dx>=0&&p.x+x+dx<COLS&&p.y+y+dy<ROWS&&(p.y+y+dy<0||!grid[p.y+y+dy][p.x+x+dx]))))}
+function spawn(){piece=next;piece.x=Math.floor((COLS-piece.matrix[0].length)/2);piece.y=0;next=randomPiece();drawNext();if(!valid(piece)){finish()}}
+function finish(){running=false;paused=false;over=true;setStatus("Game over — start a new game to play again.","over");document.querySelector("#start").textContent="▶ Play again";document.querySelector("#pause").disabled=true;if(score>best){best=score;try{localStorage.setItem("jj-tetris-best",String(best))}catch{}stats()}cancelAnimationFrame(raf)}
+function clearLines(){let cleared=0;for(let y=ROWS-1;y>=0;y--){if(grid[y].every(Boolean)){grid.splice(y,1);grid.unshift(Array(COLS).fill(0));cleared++;y++}}if(cleared){lines+=cleared;score+=[0,100,300,500,800][cleared]*level;level=1+Math.floor(lines/10);stats()}}
+function lock(){piece.matrix.forEach((r,y)=>r.forEach((v,x)=>{if(v&&piece.y+y>=0)grid[piece.y+y][piece.x+x]=piece.color}));clearLines();spawn();draw()}
+function move(dx,dy){if(!running||paused||over)return false;if(valid(piece,dx,dy)){piece.x+=dx;piece.y+=dy;draw();return true}if(dy>0)lock();return false}
+function rotate(){if(!running||paused||over)return;const m=piece.matrix[0].map((_,i)=>piece.matrix.map(r=>r[i]).reverse());for(const kick of [0,-1,1,-2,2])if(valid(piece,0,0,m)&&valid({...piece,x:piece.x+kick},0,0,m)){piece.matrix=m;piece.x+=kick;draw();return}}
+function hardDrop(){if(!running||paused||over)return;let d=0;while(valid(piece,0,1)){piece.y++;d++}score+=d*2;stats();lock()}
+function softDrop(){if(move(0,1)){score++;stats()}}
+function tick(time=0){if(!running||paused)return;const dt=Math.min(time-last,100);last=time;dropClock+=dt;const speed=Math.max(75,levels[difficulty]*Math.pow(.86,level-1));if(dropClock>=speed){dropClock=0;move(0,1)}draw();if(running&&!paused)raf=requestAnimationFrame(tick)}
+function start(){cancelAnimationFrame(raf);grid=Array.from({length:ROWS},()=>Array(COLS).fill(0));score=0;lines=0;level=1;over=false;paused=false;running=true;next=randomPiece();spawn();stats();setStatus("Game on — stack blocks and clear lines!","playing");document.querySelector("#start").textContent="▶ Restart";document.querySelector("#pause").disabled=false;document.querySelector("#pause").textContent="Ⅱ Pause";last=0;dropClock=0;draw();raf=requestAnimationFrame(tick)}
+function togglePause(){if(!running)return;paused=!paused;if(paused){cancelAnimationFrame(raf);setStatus("Paused — take a breather.","paused");document.querySelector("#pause").textContent="▶ Resume"}else{setStatus("Game on — keep stacking!","playing");document.querySelector("#pause").textContent="Ⅱ Pause";last=0;raf=requestAnimationFrame(tick)}}
+function action(k){if(k==="left")move(-1,0);if(k==="right")move(1,0);if(k==="down")softDrop();if(k==="rotate")rotate();if(k==="drop")hardDrop()}
+document.addEventListener("keydown",e=>{const map={ArrowLeft:"left",ArrowRight:"right",ArrowDown:"down",ArrowUp:"rotate"," ":"drop"};if(e.key.toLowerCase()==="p"){e.preventDefault();togglePause();return}if(map[e.key]){e.preventDefault();action(map[e.key])}});
+document.querySelectorAll("[data-key]").forEach(b=>{const k=b.dataset.key;b.addEventListener("click",()=>action(k));b.addEventListener("pointerdown",e=>{if(k==="left"||k==="right"||k==="down"){e.preventDefault();action(k)}})});
+document.querySelector("#start").addEventListener("click",start);document.querySelector("#restart").addEventListener("click",start);document.querySelector("#pause").addEventListener("click",togglePause);
+document.querySelectorAll("[data-level]").forEach(b=>b.addEventListener("click",()=>{difficulty=b.dataset.level;document.querySelectorAll("[data-level]").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));if(running)start()}));
+grid=Array.from({length:ROWS},()=>Array(COLS).fill(0));next=randomPiece();drawNext();draw();stats();
+})();
+</script></body></html>
