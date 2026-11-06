@@ -69,7 +69,7 @@ function renderGame(game) {
 
 async function loadGames() {
   try {
-    const response = await fetch("games/catalog.json");
+    const response = await fetch(`games/catalog.json?v=${Date.now()}`, { cache: "no-store" });
     if (!response.ok) throw new Error("Game catalog unavailable");
     const games = await response.json();
     if (!Array.isArray(games)) throw new Error("Game catalog must be a list");
