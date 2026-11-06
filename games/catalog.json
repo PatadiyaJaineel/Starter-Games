@@ -9,5 +9,16 @@
     "play": "tic-tac-toe/index.html",
     "download": "",
     "source": ""
+  },
+  {
+    "title": "Tetris",
+    "platform": "Browser",
+    "status": "Ready to play",
+    "description": "Stack colorful falling blocks, clear lines, and chase your high score. Choose Easy, Medium, or Hard speed.",
+    "cover": "tetris/media/cover.svg",
+    "coverAlt": "Colorful Tetris blocks stacked on a dark arcade screen",
+    "play": "tetris/index.html",
+    "download": "",
+    "source": ""
   }
 ]
