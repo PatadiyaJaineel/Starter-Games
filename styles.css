@@ -286,3 +286,104 @@ h2 { margin-bottom: 0; font-size: clamp(1.65rem, 3vw, 2.2rem); line-height: 1.2;
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
   .play-link:hover { transform: none; }
 }
+
+
+/* Homepage-only dark neon arcade theme */
+:root {
+  color-scheme: dark;
+  --ink: #f5efff;
+  --blue: #8d8bff;
+  --pool: #111027;
+  --orange: #ff895e;
+  --yellow: #ffe477;
+  --screen: #080817;
+  --paper: #17162f;
+  --muted: #d0c8ed;
+  --line: #393552;
+}
+
+body {
+  background: #080817;
+  color: #fff;
+}
+
+.site-header .brand-mark,
+.site-header .nav-pill,
+.play-link,
+.empty-coin,
+.game-tag,
+.game-tag--blue,
+.game-action--secondary {
+  background-color: #211d42;
+  border-color: #7771c9;
+  box-shadow: 0 0 10px #8d67ff55, 3px 3px 0 #05050d;
+}
+
+.welcome {
+  background: #111027;
+  border-color: #7771c9;
+  box-shadow: 8px 8px 0 #05050d, 0 0 24px #685cff44;
+}
+
+.game-row,
+.empty-state,
+.load-error {
+  background: #15142c;
+  border-color: #7771c9;
+  box-shadow: 0 0 16px #685cff22;
+}
+
+.game-row + .game-row { border-top: 0; }
+.site-footer { border-color: #7771c9; }
+.game-cover { border-color: #7771c9; }
+.game-action {
+  background: #29235b;
+  border-color: #a39aff;
+  color: #fff;
+  box-shadow: 0 0 12px #8d67ff55;
+}
+.game-tag, .game-tag--blue {
+  color: #fff;
+  border-color: #7771c9;
+}
+.skip-link { background: #211d42; color: #fff; }
+
+@keyframes rainbow-neon-text {
+  0%, 100% { color: #ff7777; text-shadow: 0 0 5px #ff7777, 0 0 13px #ff3b7b, 0 0 22px #ff3b7b88; }
+  16% { color: #ffc477; text-shadow: 0 0 5px #ffc477, 0 0 13px #ff9d36, 0 0 22px #ff9d3688; }
+  33% { color: #fff18a; text-shadow: 0 0 5px #fff18a, 0 0 13px #d6d83d, 0 0 22px #d6d83d88; }
+  50% { color: #8dffbd; text-shadow: 0 0 5px #8dffbd, 0 0 13px #21e6a1, 0 0 22px #21e6a188; }
+  66% { color: #80eaff; text-shadow: 0 0 5px #80eaff, 0 0 13px #31aaff, 0 0 22px #31aaff88; }
+  83% { color: #c6a0ff; text-shadow: 0 0 5px #c6a0ff, 0 0 13px #a45cff, 0 0 22px #a45cff88; }
+}
+
+body :is(.brand, .brand-name, .site-header nav a, .welcome-note, .welcome-note *,
+  h1, h1 span, .welcome-description, .play-link, .play-icon, .cabinet-caption,
+  .cabinet-caption *, .pixel-spark, .section-kicker, h2, .heading-period,
+  .shelf-count, .game-info h3, .game-info p, .game-meta, .game-tag,
+  .game-actions a, .empty-state h3, .empty-state p, .empty-coin,
+  .empty-pixel, .load-error, .site-footer, .site-footer *, .skip-link) {
+  animation: rainbow-neon-text 8s linear infinite;
+}
+
+body :is(.game-tag, .game-tag--blue, .empty-pixel) {
+  border-color: currentColor;
+}
+
+a:focus-visible, button:focus-visible {
+  outline-color: #fff18a;
+  box-shadow: 0 0 0 4px #8d67ff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body :is(.brand, .brand-name, .site-header nav a, .welcome-note, .welcome-note *,
+    h1, h1 span, .welcome-description, .play-link, .play-icon, .cabinet-caption,
+    .cabinet-caption *, .pixel-spark, .section-kicker, h2, .heading-period,
+    .shelf-count, .game-info h3, .game-info p, .game-meta, .game-tag,
+    .game-actions a, .empty-state h3, .empty-state p, .empty-coin,
+    .empty-pixel, .load-error, .site-footer, .site-footer *, .skip-link) {
+    animation: none;
+    color: #e7ddff;
+    text-shadow: 0 0 8px #9d7cff;
+  }
+}
