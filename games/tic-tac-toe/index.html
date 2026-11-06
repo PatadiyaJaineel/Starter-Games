@@ -23,8 +23,8 @@
     .status{display:flex;align-items:center;gap:.65rem;min-height:58px;padding:.8rem 1rem;margin:0 0 1rem;border:2px solid var(--ink);background:var(--paper);font-weight:900}
     .status-dot{width:12px;height:12px;flex:0 0 auto;border:2px solid var(--ink);background:var(--orange)}.status[data-state=computer] .status-dot{background:var(--blue)}.status[data-state=over] .status-dot{background:var(--yellow)}
     .game-layout{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:1.25rem;align-items:start}
-    .board{display:grid;width:100%;grid-template-columns:repeat(3,minmax(0,1fr));gap:.65rem;max-width:510px;margin:auto}
-    .cell{display:grid;width:100%;min-width:0;place-items:center;aspect-ratio:1;padding:0;background:var(--paper);font:clamp(2rem,9vw,4.4rem)/1 var(--display);transition:transform .12s,background .12s}
+    .board{display:grid;width:min(100%,510px);aspect-ratio:1/1;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));gap:.65rem;margin:0 auto;align-self:start}
+    .cell{appearance:none;-webkit-appearance:none;display:grid;width:100%;height:100%;min-width:0;min-height:0;place-items:center;padding:0;background:var(--paper);font:clamp(2rem,9vw,4.4rem)/1 var(--display);transition:transform .12s,background .12s}
     .cell:not(:disabled):hover{transform:translate(-2px,-2px);background:#fff1b0}.cell:disabled{cursor:default;opacity:1}
     .cell.x{color:var(--blue)}.cell.o{color:var(--orange)}.cell.winner{background:var(--yellow)}
     .side{padding:1rem;border:2px solid var(--ink);background:var(--paper)}.side h2{margin:0 0 .65rem;font: .68rem/1.8 var(--display)}
@@ -32,7 +32,7 @@
     .new-game{width:100%;margin-top:1rem;padding:.75rem .8rem;background:var(--yellow);font-weight:900}.new-game:hover{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
     .hint{margin:.8rem 0 0;color:var(--muted);font-size:.8rem}
     footer{padding:0 0 2rem;text-align:center;color:var(--muted);font-size:.82rem}
-    @media(max-width:650px){.wrap{width:min(100% - 1.25rem,480px)}main{margin:1rem auto 2rem;padding:1.1rem}.game-layout{grid-template-columns:1fr}.side{display:grid;grid-template-columns:1fr auto;align-items:center;gap:.5rem 1rem}.side h2{grid-column:1/-1}.score{grid-column:1}.new-game{grid-column:2;grid-row:2;margin:0;min-width:125px}.hint{grid-column:1/-1}.board{width:100%;gap:.5rem}.cell{box-shadow:2px 2px 0 var(--ink)}}
+    @media(max-width:650px){.wrap{width:min(100% - 1.25rem,480px)}main{margin:1rem auto 2rem;padding:1.1rem}.game-layout{grid-template-columns:1fr}.side{display:grid;grid-template-columns:1fr auto;align-items:center;gap:.5rem 1rem}.side h2{grid-column:1/-1}.score{grid-column:1}.new-game{grid-column:2;grid-row:2;margin:0;min-width:125px}.hint{grid-column:1/-1}.board{width:min(100%,420px);gap:.5rem}.cell{height:100%;box-shadow:2px 2px 0 var(--ink)}}
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;scroll-behavior:auto!important}}
   </style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
