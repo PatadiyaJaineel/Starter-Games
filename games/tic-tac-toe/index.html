@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1e1b52">
+  <meta name="description" content="Play a round of Tic-Tac-Toe against the JJ Games arcade computer.">
+  <title>Tic-Tac-Toe — JJ Games</title>
+  <style>
+    :root{color-scheme:light;--ink:#1e1b52;--blue:#5357d8;--pool:#47d6c8;--orange:#f47545;--yellow:#f4d35e;--screen:#fff7d6;--paper:#fffdf3;--muted:#615e86;--line:#d8d5bd;--display:"Press Start 2P","Courier New",monospace;--body:"Trebuchet MS","Segoe UI",sans-serif}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;background:var(--screen);color:var(--ink);font:16px/1.6 var(--body)}
+    a{color:inherit}button{font:inherit;cursor:pointer}button:focus-visible,a:focus-visible{outline:4px solid var(--orange);outline-offset:4px}
+    .wrap{width:min(920px,calc(100% - 2rem));margin:auto}.topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.2rem 0}
+    .brand{display:flex;align-items:center;gap:.7rem;font: .72rem var(--display);text-decoration:none;letter-spacing:-.08em}.mark{display:grid;place-items:center;width:40px;height:40px;border:3px solid var(--ink);background:var(--yellow);box-shadow:4px 4px 0 var(--ink)}
+    .back{font-weight:800;text-decoration:none}.back:hover{text-decoration:underline;text-underline-offset:.2em}
+    main{padding:clamp(1.2rem,4vw,2.5rem);border:3px solid var(--ink);background:var(--pool);box-shadow:8px 8px 0 var(--ink);margin:1.5rem auto 3rem}
+    .eyebrow{margin:0 0 .6rem;font-size:.78rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+    h1{margin:0;font:clamp(1.25rem,4vw,2rem)/1.6 var(--display);letter-spacing:-.08em}h1 span{color:var(--blue)}
+    .intro{margin:.65rem 0 1.5rem;max-width:55ch}
+    .toolbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1rem}
+    .difficulty{display:flex;gap:.45rem;flex-wrap:wrap}.difficulty button,.new-game,.cell{border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink)}
+    .difficulty button{padding:.5rem .7rem;background:var(--paper);font-weight:800;font-size:.85rem}.difficulty button[aria-pressed=true]{background:var(--yellow)}
+    .status{display:flex;align-items:center;gap:.65rem;min-height:58px;padding:.8rem 1rem;margin:0 0 1rem;border:2px solid var(--ink);background:var(--paper);font-weight:900}
+    .status-dot{width:12px;height:12px;flex:0 0 auto;border:2px solid var(--ink);background:var(--orange)}.status[data-state=computer] .status-dot{background:var(--blue)}.status[data-state=over] .status-dot{background:var(--yellow)}
+    .game-layout{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:1.25rem;align-items:start}
+    .board{display:grid;grid-template-columns:repeat(3,1fr);gap:.65rem;max-width:510px;margin:auto}
+    .cell{display:grid;place-items:center;aspect-ratio:1;min-width:0;padding:0;background:var(--paper);font:clamp(2rem,9vw,4.4rem)/1 var(--display);transition:transform .12s,background .12s}
+    .cell:not(:disabled):hover{transform:translate(-2px,-2px);background:#fff1b0}.cell:disabled{cursor:default;opacity:1}
+    .cell.x{color:var(--blue)}.cell.o{color:var(--orange)}.cell.winner{background:var(--yellow)}
+    .side{padding:1rem;border:2px solid var(--ink);background:var(--paper)}.side h2{margin:0 0 .65rem;font: .68rem/1.8 var(--display)}
+    .score{display:grid;grid-template-columns:1fr 1fr;gap:.55rem}.score-item{padding:.65rem;border:1.5px solid var(--line);text-align:center}.score-item strong{display:block;font:1.2rem var(--display)}.score-item span{font-size:.78rem;font-weight:800}
+    .new-game{width:100%;margin-top:1rem;padding:.75rem .8rem;background:var(--yellow);font-weight:900}.new-game:hover{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+    .hint{margin:.8rem 0 0;color:var(--muted);font-size:.8rem}
+    footer{padding:0 0 2rem;text-align:center;color:var(--muted);font-size:.82rem}
+    @media(max-width:650px){.wrap{width:min(100% - 1.25rem,480px)}main{margin:1rem auto 2rem;padding:1.1rem}.game-layout{grid-template-columns:1fr}.side{display:grid;grid-template-columns:1fr auto;align-items:center;gap:.5rem 1rem}.side h2{grid-column:1/-1}.score{grid-column:1}.new-game{grid-column:2;grid-row:2;margin:0;min-width:125px}.hint{grid-column:1/-1}.board{width:100%;gap:.5rem}.cell{box-shadow:2px 2px 0 var(--ink)}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;scroll-behavior:auto!important}}
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <a class="brand" href="../../" aria-label="JJ Games home"><span class="mark" aria-hidden="true">JJ</span><span>GAMES</span></a>
+      <a class="back" href="../../">← Back to arcade</a>
+    </header>
+    <main>
+      <p class="eyebrow">Player vs. computer · 2D classic</p>
+      <h1>TIC-TAC-<span>TOE</span></h1>
+      <p class="intro">Three in a row wins. Pick your square and see if you can outsmart the arcade computer.</p>
+      <div class="toolbar">
+        <strong>Computer level</strong>
+        <div class="difficulty" role="group" aria-label="Computer difficulty">
+          <button type="button" data-level="easy" aria-pressed="false">Easy</button>
+          <button type="button" data-level="medium" aria-pressed="true">Medium</button>
+          <button type="button" data-level="hard" aria-pressed="false">Hard</button>
+        </div>
+      </div>
+      <p class="status" id="status" data-state="player" role="status" aria-live="polite"><span class="status-dot" aria-hidden="true"></span><span id="status-text">Your turn — you are X.</span></p>
+      <div class="game-layout">
+        <div class="board" id="board" role="group" aria-label="Tic-Tac-Toe board">
+          <button class="cell" type="button" data-cell="0" aria-label="Row 1, column 1, empty"></button>
+          <button class="cell" type="button" data-cell="1" aria-label="Row 1, column 2, empty"></button>
+          <button class="cell" type="button" data-cell="2" aria-label="Row 1, column 3, empty"></button>
+          <button class="cell" type="button" data-cell="3" aria-label="Row 2, column 1, empty"></button>
+          <button class="cell" type="button" data-cell="4" aria-label="Row 2, column 2, empty"></button>
+          <button class="cell" type="button" data-cell="5" aria-label="Row 2, column 3, empty"></button>
+          <button class="cell" type="button" data-cell="6" aria-label="Row 3, column 1, empty"></button>
+          <button class="cell" type="button" data-cell="7" aria-label="Row 3, column 2, empty"></button>
+          <button class="cell" type="button" data-cell="8" aria-label="Row 3, column 3, empty"></button>
+        </div>
+        <aside class="side" aria-label="Round score and controls">
+          <h2>ROUND SCORE</h2>
+          <div class="score">
+            <div class="score-item"><strong id="player-score">0</strong><span>You · X</span></div>
+            <div class="score-item"><strong id="computer-score">0</strong><span>CPU · O</span></div>
+            <div class="score-item"><strong id="draw-score">0</strong><span>Draws</span></div>
+          </div>
+          <button class="new-game" id="new-game" type="button">↻ New round</button>
+          <p class="hint">Change the level any time. A new round keeps the score.</p>
+        </aside>
+      </div>
+    </main>
+    <footer>Made for one more round · JJ Games</footer>
+  </div>
+  <script>
+    (() => {
+      const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+      const cells = [...document.querySelectorAll("[data-cell]")];
+      const status = document.querySelector("#status");
+      const statusText = document.querySelector("#status-text");
+      const levelButtons = [...document.querySelectorAll("[data-level]")];
+      const scores = {player:0,computer:0,draw:0};
+      let board, level = "medium", finished, playerTurn, winningLine;
+      const lineFor = (state, mark) => wins.find(line => line.every(i => state[i] === mark));
+      const available = state => state.map((v,i) => v === "" ? i : -1).filter(i => i !== -1);
+
+      function updateStatus(message, state) {
+        statusText.textContent = message;
+        status.dataset.state = state;
+      }
+      function updateScore() {
+        document.querySelector("#player-score").textContent = scores.player;
+        document.querySelector("#computer-score").textContent = scores.computer;
+        document.querySelector("#draw-score").textContent = scores.draw;
+      }
+      function render() {
+        cells.forEach((cell,i) => {
+          const mark = board[i];
+          cell.textContent = mark;
+          cell.className = "cell" + (mark ? " " + mark.toLowerCase() : "") + (winningLine?.includes(i) ? " winner" : "");
+          cell.disabled = Boolean(mark) || finished || !playerTurn;
+          const row = Math.floor(i / 3) + 1, col = i % 3 + 1;
+          cell.setAttribute("aria-label", `Row ${row}, column ${col}, ${mark || "empty"}${winningLine?.includes(i) ? ", winning square" : ""}`);
+        });
+      }
+      function endRound(mark, line) {
+        finished = true;
+        winningLine = line || null;
+        if (mark === "X") { scores.player++; updateStatus("You win! Nice three in a row.", "over"); }
+        else if (mark === "O") { scores.computer++; updateStatus("Computer wins this round. Try again!", "over"); }
+        else { scores.draw++; updateStatus("It's a draw! Play another round.", "over"); }
+        updateScore(); render();
+      }
+      function play(index, mark) {
+        if (finished || board[index] !== "") return false;
+        board[index] = mark;
+        const line = lineFor(board, mark);
+        if (line) { endRound(mark, line); return true; }
+        if (available(board).length === 0) { endRound(null, null); return true; }
+        return false;
+      }
+      function winningMove(state, mark) {
+        for (const i of available(state)) {
+          const next = state.slice(); next[i] = mark;
+          if (lineFor(next, mark)) return i;
+        }
+        return null;
+      }
+      function minimax(state, maximizing, depth) {
+        if (lineFor(state,"O")) return {score:10-depth};
+        if (lineFor(state,"X")) return {score:depth-10};
+        const moves = available(state);
+        if (!moves.length) return {score:0};
+        let best = {score: maximizing ? -Infinity : Infinity, index: moves[0]};
+        for (const i of moves) {
+          state[i] = maximizing ? "O" : "X";
+          const result = minimax(state, !maximizing, depth + 1);
+          state[i] = "";
+          if ((maximizing && result.score > best.score) || (!maximizing && result.score < best.score)) best = {score:result.score,index:i};
+        }
+        return best;
+      }
+      function computerChoice() {
+        const moves = available(board);
+        if (level === "easy") return moves[Math.floor(Math.random() * moves.length)];
+        if (level === "medium") {
+          const win = winningMove(board,"O"); if (win !== null) return win;
+          const block = winningMove(board,"X"); if (block !== null) return block;
+          if (moves.includes(4)) return 4;
+          const corners = moves.filter(i => [0,2,6,8].includes(i));
+          if (corners.length) return corners[Math.floor(Math.random()*corners.length)];
+          return moves[Math.floor(Math.random()*moves.length)];
+        }
+        return minimax(board.slice(),true,0).index;
+      }
+      function computerTurn() {
+        if (finished) return;
+        playerTurn = false;
+        updateStatus("Computer is thinking…", "computer");
+        render();
+        window.setTimeout(() => {
+          if (finished) return;
+          const choice = computerChoice();
+          play(choice,"O");
+          if (!finished) {
+            playerTurn = true;
+            updateStatus("Your turn — you are X.", "player");
+            render();
+          }
+        }, 320);
+      }
+      function newRound() {
+        board = Array(9).fill("");
+        finished = false; playerTurn = true; winningLine = null;
+        updateStatus("Your turn — you are X.", "player");
+        render();
+      }
+      cells.forEach((cell,i) => cell.addEventListener("click", () => {
+        if (!playerTurn || finished || board[i] !== "") return;
+        const ended = play(i,"X");
+        if (!ended) computerTurn();
+      }));
+      levelButtons.forEach(button => button.addEventListener("click", () => {
+        level = button.dataset.level;
+        levelButtons.forEach(item => item.setAttribute("aria-pressed",String(item === button)));
+        newRound();
+      }));
+      document.querySelector("#new-game").addEventListener("click",newRound);
+      updateScore(); newRound();
+    })();
+  </script>
+</body>
+</html>
