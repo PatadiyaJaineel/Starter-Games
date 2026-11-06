@@ -23,8 +23,8 @@
     .status{display:flex;align-items:center;gap:.65rem;min-height:58px;padding:.8rem 1rem;margin:0 0 1rem;border:2px solid var(--ink);background:var(--paper);font-weight:900}
     .status-dot{width:12px;height:12px;flex:0 0 auto;border:2px solid var(--ink);background:var(--orange)}.status[data-state=computer] .status-dot{background:var(--blue)}.status[data-state=over] .status-dot{background:var(--yellow)}
     .game-layout{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:1.25rem;align-items:start}
-    .board{display:grid;grid-template-columns:repeat(3,1fr);gap:.65rem;max-width:510px;margin:auto}
-    .cell{display:grid;place-items:center;aspect-ratio:1;min-width:0;padding:0;background:var(--paper);font:clamp(2rem,9vw,4.4rem)/1 var(--display);transition:transform .12s,background .12s}
+    .board{display:grid;width:100%;grid-template-columns:repeat(3,minmax(0,1fr));gap:.65rem;max-width:510px;margin:auto}
+    .cell{display:grid;width:100%;min-width:0;place-items:center;aspect-ratio:1;padding:0;background:var(--paper);font:clamp(2rem,9vw,4.4rem)/1 var(--display);transition:transform .12s,background .12s}
     .cell:not(:disabled):hover{transform:translate(-2px,-2px);background:#fff1b0}.cell:disabled{cursor:default;opacity:1}
     .cell.x{color:var(--blue)}.cell.o{color:var(--orange)}.cell.winner{background:var(--yellow)}
     .side{padding:1rem;border:2px solid var(--ink);background:var(--paper)}.side h2{margin:0 0 .65rem;font: .68rem/1.8 var(--display)}
