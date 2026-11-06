@@ -1,1 +1,13 @@
-[]
+[
+  {
+    "title": "Tic-Tac-Toe",
+    "platform": "Browser",
+    "status": "Ready to play",
+    "description": "A retro three-in-a-row showdown. Take on the computer with Easy, Medium, or Hard difficulty.",
+    "cover": "tic-tac-toe/media/cover.svg",
+    "coverAlt": "Retro Tic-Tac-Toe board with X and O marks",
+    "play": "tic-tac-toe/index.html",
+    "download": "",
+    "source": ""
+  }
+]
